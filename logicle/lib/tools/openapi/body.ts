@@ -26,7 +26,7 @@ function mergeRequestBodyDefIntoToolFunctionSchema(
   schema: ToolFunctionSchemaParams,
   openApiSchema: OpenAPIV3.SchemaObject
 ) {
-  schema.properties['body'] = openApiSchema
+  schema.properties['body'] = openApiSchema as any
   schema.required = [...schema.required, 'body']
 }
 

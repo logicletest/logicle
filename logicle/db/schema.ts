@@ -196,6 +196,7 @@ export interface User {
   updatedAt: string
   preferences: string
   ssoUser: number
+  google?: string
 }
 
 export interface JacksonStore {

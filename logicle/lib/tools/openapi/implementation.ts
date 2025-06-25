@@ -37,11 +37,11 @@ function mergeOperationParamsIntoToolFunctionSchema(
   const operationParameters = operationParams as OpenAPIV3.ParameterObject[]
   operationParameters.forEach((param: OpenAPIV3.ParameterObject) => {
     if (param.schema && (param.in === 'query' || param.in === 'path')) {
-      toolParams.properties[param.name] = param.schema
+      toolParams.properties[param.name] = param.schema as any
       if (param.required) {
         toolParams.required.push(param.name)
       } else {
-        toolParams.properties[param.name].type = [toolParams.properties[param.name].type, 'null']
+        toolParams.properties[param.name].type = [toolParams.properties[param.name].type as any, 'null']
         toolParams.required.push(param.name)
       }
     }

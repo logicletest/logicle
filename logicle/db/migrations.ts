@@ -47,6 +47,7 @@ export async function migrateToLatest() {
     '20250407-user_sso_flag': await import('./migrations/20250407-user_sso_flag'),
     '20250515-assistant_versions': await import('./migrations/20250515-assistant_versions'),
     '20250516-tool_new_fields': await import('./migrations/20250516-tool_new_fields'),
+    '20250625-user_google': await import('./migrations/20250625-user_google'),
   }
 
   const dialect = await createDialect()

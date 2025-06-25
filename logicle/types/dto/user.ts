@@ -5,7 +5,7 @@ export type User = Omit<schema.User, 'imageId' | 'ssoUser'> & {
   image: string | null
   ssoUser: boolean
 }
-export type InsertableUser = Omit<User, 'id' | 'createdAt' | 'updatedAt' | 'provisioned'>
+export type InsertableUser = Omit<User, 'id' | 'createdAt' | 'updatedAt' | 'provisioned' | 'google'>
 export type UpdateableUser = InsertableUser
 export type UpdateableUserSelf = Omit<UpdateableUser, 'role' | 'password' | 'ssoUser'>
 

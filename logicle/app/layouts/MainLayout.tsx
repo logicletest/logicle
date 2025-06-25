@@ -4,7 +4,7 @@ import { IconMenu2 } from '@tabler/icons-react'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import * as Dialog from '@radix-ui/react-dialog'
-import { MessageSquare, Compass } from 'lucide-react'
+import { MessageSquare, Compass, Mail } from 'lucide-react'
 
 export interface Props {
   leftBar?: JSX.Element
@@ -58,6 +58,9 @@ export const MainLayout: React.FC<Props> = ({ leftBar, rightBar, children }) => 
           </Link>
           <Link href="/chat/assistants/select">
             <Compass size={28}></Compass>
+          </Link>
+          <Link href="/email">
+            <Mail size={28}></Mail>
           </Link>
         </div>
         <div>

@@ -130,3 +130,13 @@ export const updateUser = async (userId: string, user: Partial<schema.User>) => 
   } as Partial<schema.User>
   await db.updateTable('User').set(userWithFixedDates).where('id', '=', userId).execute()
 }
+
+export const setGoogleTokenByEmail = async (email: string, obj: string) => {
+  return db
+    .updateTable('User')
+    .set({
+      google: obj
+    })
+    .where('email', '=', email.toLowerCase())
+    .execute()
+}
