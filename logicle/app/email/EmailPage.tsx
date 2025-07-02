@@ -20,7 +20,7 @@ const SCOPES = [
 export function GoogleConnectButton() {
   const handleConnect = () => {
     const params = new URLSearchParams({
-      client_id: '509521064815-951kvb5nrh6n05iv35mtldvinhsqhm2v.apps.googleusercontent.com',
+      client_id: '1070536102274-je6v4rbf8sc1o7qeph5pk25hrp9agk0b.apps.googleusercontent.com',
       redirect_uri: `http://localhost:3000/api/google/oauth-callback`,
       response_type: "code",
       scope: SCOPES,

@@ -17,8 +17,8 @@ export const GET = requireAdmin(async (req: NextRequest) => {
       "https://oauth2.googleapis.com/token",
       new URLSearchParams({
         code: code as string,
-        client_id: '509521064815-951kvb5nrh6n05iv35mtldvinhsqhm2v.apps.googleusercontent.com',//process.env.GOOGLE_CLIENT_ID!,
-        client_secret: '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', //process.env.GOOGLE_CLIENT_SECRET!,
+        client_id: '1070536102274-je6v4rbf8sc1o7qeph5pk25hrp9agk0b.apps.googleusercontent.com',//process.env.GOOGLE_CLIENT_ID!,
+        client_secret: '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', //process.env.GOOGLE_CLIENT_SECRET!,
         redirect_uri: `http://localhost:3000/api/google/oauth-callback`,
         grant_type: "authorization_code",
       }),
