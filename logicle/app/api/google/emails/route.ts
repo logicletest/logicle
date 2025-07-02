@@ -1,4 +1,4 @@
-import { getUserById } from "../../../../models/user"
+import { getUserById, setGoogleTokenByEmail } from "../../../../models/user"
 import ApiResponses from "../../utils/ApiResponses"
 import { requireSession } from "../../utils/auth"
 import { google } from 'googleapis';
@@ -9,45 +9,52 @@ export const GET = requireSession(async (session) => {
     return ApiResponses.noSuchEntity('Unknown session user')
   }
 
-  const { access_token } = JSON.parse(user?.google || '{}')
+  const { access_token, } = JSON.parse(user?.google || '{}')
+  console.log('user?.google', user?.google);
 
   if (!access_token) {
     return ApiResponses.noSuchEntity('No google token')
   }
-  const oauth2Client = new google.auth.OAuth2();
-  oauth2Client.setCredentials({ access_token });
 
-  const gmail = google.gmail({ version: 'v1', auth: oauth2Client });
+  try {
+    const oauth2Client = new google.auth.OAuth2();
+    oauth2Client.setCredentials({ access_token });
 
-  // 1️⃣ Prendi lista messaggi
-  const listRes = await gmail.users.messages.list({
-    userId: 'me',
-    labelIds: ['INBOX'],
-    maxResults: 5, 
-  });
+    const gmail = google.gmail({ version: 'v1', auth: oauth2Client });
 
-  console.log('listRes',listRes.data);
-  
+    // 1️⃣ Prendi lista messaggi
+    const listRes = await gmail.users.messages.list({
+      userId: 'me',
+      labelIds: ['INBOX'],
+      maxResults: 5,
+    });
 
-  const messages = listRes.data.messages || [];
+    console.log('listRes', listRes.data);
 
-  const details = await Promise.all(
-    messages.map(async (msg) => {
-      const msgRes = await gmail.users.messages.get({
-        userId: 'me',
-        id: msg.id!,
-        format: 'metadata',
-        metadataHeaders: ['Subject', 'From', 'Date'],
-      });
 
-      const headers = msgRes.data.payload?.headers || [];
+    const messages = listRes.data.messages || [];
 
-      const subject = headers.find((h) => h.name === 'Subject')?.value;
-      const from = headers.find((h) => h.name === 'From')?.value;
-      const date = headers.find((h) => h.name === 'Date')?.value;
+    const details = await Promise.all(
+      messages.map(async (msg) => {
+        const msgRes = await gmail.users.messages.get({
+          userId: 'me',
+          id: msg.id!,
+          format: 'metadata',
+          metadataHeaders: ['Subject', 'From', 'Date'],
+        });
 
-      return { id: msg.id, subject, from, date };
-    })
-  );
-  return ApiResponses.json(details)
+        const headers = msgRes.data.payload?.headers || [];
+
+        const subject = headers.find((h) => h.name === 'Subject')?.value;
+        const from = headers.find((h) => h.name === 'From')?.value;
+        const date = headers.find((h) => h.name === 'Date')?.value;
+
+        return { id: msg.id, subject, from, date };
+      })
+    );
+    return ApiResponses.json(details)
+  } catch (e) {
+    await setGoogleTokenByEmail(user.email, '{}')
+    return ApiResponses.noSuchEntity('error on google')
+  }
 })
